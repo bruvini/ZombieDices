@@ -1,0 +1,62 @@
+Bruno Vinícius da Silva
+Tecnologia em Análise e Desenvolvimento de Sistemas
+
+INÍCIO
+
+rounds = 0
+vencedor = {}
+dados = 3
+
+FAÇA a leitura das regras do jogo
+
+Selecione a quantidade de jogadores
+    	players = INTEIRO(ARMAZENE("Quantos zumbis vão participar dessa comilamnça: "))
+	ENQUANTO players < 2:
+		ESCREVA("É necessário 2 ou mais zumbis para a festa começar!")
+
+PARA cada jogador indicado na variável {players}, FAÇA:
+    nome_{players} = REAL(ARMAZENE("Digite seu nome, zumbi: "))
+
+SE rounds = 0:
+    FAÇA o grito mais assustador de "Céééééérebros":
+        PARA cada grito atribuir uma nota para nome_{players}
+        Criar lista de notas
+        Adicionar em ordem decrescente na lista criada os nomes e suas respectivas notas
+
+    Player com maior nota começa
+
+SENÃO:
+    {vencedor} da ultima rodada inicia
+
+ENQUANTO qtd_tiros < 3 ou qtd_cerebros < 13 FAÇA:
+    PARA quem está na vez FAÇA:
+        qtd_tiros = 0
+        qtd_cerebros = 0
+        qtd_passos = 0
+
+        agitar recipiente com os dados
+        escolher {dados} dados sem olhar.format(dados - qtd_passos)
+        arremesar os dados sobre a superfície e FAÇA:
+
+        qtd_tiros + tiros_dado
+        qtd_cerebros + cerebros_dado
+        qtd_passos + passos_dado
+
+        SE qtd_tiros >= 3:
+            ESCREVA("zumbi eliminado!")
+        SENÃO:
+            SE qtd_cerebros >= 13:
+                rounds + 1
+                vencedor = nome_{players}
+                ESCREVA("zumbi vencedor")
+            SENÃO:
+                play_again = BOOLEANO(input("Vai jogar novamente? "))
+                SE play_again = "sim":
+                   FAÇA tudo de novo
+                SENÃO:
+                    qtd_tiros = 0
+                    qtd_passos = 0
+                    guarde dados no recipiente
+                    entregue recipiente ao próximo jogador
+
+FIM
