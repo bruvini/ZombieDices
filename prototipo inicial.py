@@ -32,8 +32,7 @@ print("Para finalizar o registro de jogadores, basta apertar ENTER para enviar a
 nome = str(input("Digite o nome do jogador {}: ".format((qtd_jogadores))))
 
 while nome !=  '':
-    player = [qtd_jogadores, nome]
-    players.append(player)
+    players.append(nome)
     qtd_jogadores += 1
     nome = str(input("Digite o nome do jogador {}: ".format((qtd_jogadores))))
 
@@ -42,8 +41,8 @@ if qtd_jogadores <2:
 else:
     print("Vamos começar a caça aos cérebros?")
 
-for i, nome in enumerate(players[nome]):
-    play = str(input("{} é sua vez de jogar. Aperte enter para iniciar: ".format(player[i])))
+for i in players:
+    play = str(input("{} é sua vez de jogar. Aperte enter para iniciar: ".format(i)))
 
 
 
