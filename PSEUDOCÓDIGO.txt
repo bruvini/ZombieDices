@@ -10,7 +10,7 @@ dados = 3
 FAÇA a leitura das regras do jogo
 
 Selecione a quantidade de jogadores
-    	players = INTEIRO(ARMAZENE("Quantos zumbis vão participar dessa comilamnça: "))
+    	players = INTEIRO(ARMAZENE("Quantos zumbis vão participar dessa comilança: "))
 	ENQUANTO players < 2:
 		ESCREVA("É necessário 2 ou mais zumbis para a festa começar!")
 
@@ -27,6 +27,8 @@ SE rounds = 0:
 
 SENÃO:
     {vencedor} da ultima rodada inicia
+
+FIM SE
 
 ENQUANTO qtd_tiros < 3 ou qtd_cerebros < 13 FAÇA:
     PARA quem está na vez FAÇA:
@@ -58,5 +60,7 @@ ENQUANTO qtd_tiros < 3 ou qtd_cerebros < 13 FAÇA:
                     qtd_passos = 0
                     guarde dados no recipiente
                     entregue recipiente ao próximo jogador
+       	FIM SE
+	FIM SE
 
 FIM
