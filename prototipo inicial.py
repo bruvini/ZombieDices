@@ -14,13 +14,25 @@ import random #gerar números ou dados aleatórios
 
 #definir variáveis iniciais
 rounds = 0 #número de rodadas jogadas
-vencedor = [] #nome do vencedor da ultima rodada
-dados = 3 #quantidade de dados para a rodada atual sem contar com o número de PASSOS
 qtd_jogadores = 1
 players = []
-contagem_passos = 0 #quantidade de passos na rodada
-contagem_tiros = 0 #quantidade de tiros na rodada
-contagem_cerebros = 0 #quantidade de cerebros na rodada
+
+DadoVerde = "CPCTPC"
+DadoAmarelo = "TPCTPC"
+DadoVermelho = "TPTCPT"
+dados = 0
+copo = []
+
+for i in range(13):
+    if dados < 6:
+        copo.append(DadoVerde)
+        dados += 1
+    elif dados >= 6 and dados < 10:
+        copo.append(DadoAmarelo)
+        dados += 1
+    elif dados >= 10 and dados <= 13:
+        copo.append(DadoVermelho)
+        dados += 1
 
 #Mensagem de saudação aos jogadores
 print (100*'-')
@@ -54,26 +66,51 @@ if qtd_jogadores <2:
     print("É necessário 2 ou mais zumbis para o jogo começar! Reinicie o Jogo!") #fecha se tiver menos que 2 jogadores
 else:
     print("Vamos começar a caça aos cérebros?") #continua para a rodada se tiver 2 ou mais jogadores
-print (100*'-')
 
-print ()
+    print (100*'-')
 
-time.sleep(1)
+    print ()
 
-print (100*'-')
-#executa as ações de cada rodada para cada jogador na lista PLAYERS
-for i in players:
-    play = str(input("{} é sua vez de jogar. Digite S para continuar e N para finalizar: ".format(i)))
-    play_min = play.lower()
-    if 's' or 'n' in play_min:
-        if play_min == "n":
-           print("Ok! Vai perder de comer alguns cérebros, {}...".format(i))
+    time.sleep(1)
+
+    print (100*'-')
+    #executa as ações de cada rodada para cada jogador na lista PLAYERS
+    for i in players:
+        play = str(input("{} é sua vez de jogar. Digite S para continuar e N para finalizar: ".format(i)))
+        play_min = play.lower()
+        if 's' or 'n' in play_min:
+
+            contagem_passos = 0  # quantidade de passos na rodada
+            contagem_tiros = 0  # quantidade de tiros na rodada
+            contagem_cerebros = 0  # quantidade de cerebros na rodada
+            dados_atual = 3
+
+            if play_min == "s":
+                while contagem_tiros < 3:
+                    print("Em cada dado apareceu: ")
+                    for i in range(dados_atual):
+                        dado = random.choice(copo)
+                        face_dado = random.choice(dado)
+                        if face_dado == "T":
+                            face_dado = "TIRO"
+                            contagem_tiros = contagem_tiros + 1
+                        elif face_dado == "P":
+                            face_dado = "PASSO"
+                            contagem_passos = contagem_passos + 1
+                        else:
+                            face_dado == "C"
+                            face_dado = "CÉREBRO"
+                            contagem_cerebros = contagem_cerebros + 1
+
+                        print(face_dado)
+
+                        print()
+
+                        print(f"Você tem {contagem_tiros} tiros, {contagem_passos} passos e {contagem_cerebros} cérebros.")
+                        print()
+
+            else:
+                print("Ok! Vai perder de comer alguns cérebros, {}...".format(i))
         else:
-            print ("ok")
-
-
-
-
-
-
+            print("Você não digitou um S ou N!")
 
