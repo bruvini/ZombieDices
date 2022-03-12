@@ -12,124 +12,128 @@ Checkpoint 1:
 import time #inserir pausas entre ações
 import random #gerar números ou dados aleatórios
 
-#definir variáveis iniciais
-qtd_jogadores = 1
-players = []
-dados = 13
-copo = ['CPCTPC', 'CPCTPC', 'CPCTPC', 'CPCTPC', 'CPCTPC', 'CPCTPC', 'TPCTPC', 'TPCTPC', 'TPCTPC', 'TPCTPC', 'TPTCPT', 'TPTCPT', 'TPTCPT']
-pontuação = []
-
-'''
-DadoVerde = "CPCTPC"
-DadoAmarelo = "TPCTPC"
-DadoVermelho = "TPTCPT"
-'''
-
 #Mensagem de saudação aos jogadores
 print (100*'-')
 print("Olá, ZUMBIIIIIS! Sejam bem-vindos ao Zombie Dices, um jogo onde o melhor comedor de cérebros VENCE!")
+print (100*'-', '\n')
 time.sleep(1) #Pausa de 1 segundo até o próximo comando
-print (100*'-')
 
-print ()
+#Contabilizar jogadores
+qtd_jogadores = 0
 
-#Informar a quantidade de jogadores e analisar se tem a quantidade mínima necessária
-print("Para tudo funcionar, precisamos de pelo menos dois zumbis famintos por cérebros...")
-print("Escreva o nome dos jogadores em cada linha, e quando não tiver mais, basta apertar ENTER para enviar a resposta em branco")
+while qtd_jogadores <2:
+    qtd_jogadores = int(input('Para iniciar, por favor, insira a quantidade de jogadores: '))
+    if qtd_jogadores <2:
+        print('É necessário  2 ou mais jogadores para iniciar a partida! Tente novamente...')
 
-print ()
+print (100*'-', '\n')
+time.sleep(1) #Pausa de 1 segundo até o próximo comando
 
-print (100*'-')
-nome = str(input("Digite o nome do jogador 1: ")) #armazena o nome dos jogadores
+#registrar nomes
+print('Tudo certo! Agora precisamos saber seus nomes')
+jogadores = []
 
-#Estrutura para armazenar o nome dos jogadores em uma lista assim como atualizar a quantidade de jogadores
-while nome !=  '':
-    players.append(nome) #armazena o nome dos jogadores na lista PLAYERS
-    qtd_jogadores += 1 #armazena a quantidade de jogadores
-    nome = str(input("Digite o nome do jogador {}: ".format((qtd_jogadores)))) #gera input para a inserção de outro jogador
-    if nome == '':
-        qtd_jogadores -= 1 #se o output for vazio, não irá contabilizar no número total de jogadores
+for i in range(qtd_jogadores):
+    jogador = str(input(f'Digite o nome do jogador {i+1}: '))
+    jogadores.append(jogador)
 
-print ()
+print (100*'-', '\n')
+time.sleep(1) #Pausa de 1 segundo até o próximo comando
 
-#identifica se há jogadores em quantidade suficiente
-if qtd_jogadores <2:
-    print("É necessário 2 ou mais zumbis para o jogo começar! Reinicie o Jogo!") #fecha se tiver menos que 2 jogadores
-else:
-    print("Vamos começar a caça aos cérebros?") #continua para a rodada se tiver 2 ou mais jogadores
+#criação dos dados
+DadoVerde = "CPCTPC"
+DadoAmarelo = "TPCTPC"
+DadoVermelho = "TPTCPT"
 
-    print (100*'-')
+copo = [DadoVerde, DadoVerde, DadoVerde, DadoVerde, DadoVerde, DadoVerde, DadoAmarelo, DadoAmarelo, DadoAmarelo,
+         DadoAmarelo, DadoVermelho, DadoVermelho, DadoVermelho]
 
-    time.sleep(1)
+print('Agora sim... PREPAREM-SE PARA A COMILANÇA DE CÉREBROS!!!')
 
-    for i in players:
-        start = str(input(f"{i}, digite 'S' para iniciar a rodada ou 'N' para passar a vez: \n"))
-        start_lower = start.lower()
-        if start_lower == "s" or start_lower == "n":
-            if start_lower == "n":
-                input(f"{i}, você passou a sua vez! Pressione ENTER!")
-            else:
-                contagem_passos = 0  # quantidade de passos na rodada
-                contagem_tiros = 0  # quantidade de tiros na rodada
-                contagem_cerebros = 0  # quantidade de cerebros na rodada
-                dados_atual = dados - contagem_passos
+print (100*'-', '\n')
+time.sleep(1) #Pausa de 1 segundo até o próximo comando
 
-                while contagem_cerebros < 13 or contagem_tiros < 3:
-                    try:
-                        for i in range(dados_atual):
-                            dado = random.choice(copo)
-                            face_dado = random.choice(dado)
-                            copo.remove(dado)
+#variáveis globais para incrementação
+dados_sorteio = []
+jogador_ativo = 0
+cerebros = 0
+tiros = 0
+passos = 0
 
-                            if face_dado == "T":
-                                face_dado = "TIRO"
-                                contagem_tiros = contagem_tiros + 1
-                            elif face_dado == "P":
-                                face_dado = "PASSO"
-                                contagem_passos = contagem_passos + 1
-                            else:
-                                face_dado == "C"
-                                face_dado = "CÉREBRO"
-                                contagem_cerebros = contagem_cerebros + 1
+#início da rodada
+while True:
+    print('\n')
+    print(f'Rodada do jogador {jogadores[jogador_ativo]}')
 
-                            print(face_dado)
+    print(100 * '-', '\n')
+    time.sleep(1)  # Pausa de 1 segundo até o próximo comando
 
-                            print(f"Você tem {contagem_tiros} tiros, {contagem_passos} passos e {contagem_cerebros} cérebros.\n")
+    #sorteio dos dados
+    print('Os dados sorteados foram:')
 
-                    except IndexError:
-                        print("Sem dados suficientes no copo!")
-                        break
+    for i in range(0, 3, 1):
+        num_sorteado = random.randint(0,12)
+        dado_sorteado = copo[num_sorteado]
 
-                pontuação.append(i)
-                pontuação.append(contagem_tiros)
-                pontuação.append(contagem_cerebros)
-                pontuação.append(contagem_passos)
+        if dado_sorteado == "CPCTPC":
+            cor_dado = 'DADO VERDE'
+        elif dado_sorteado == "TPCTPC":
+            cor_dado = 'DADO AMARELO'
+        else:
+            cor_dado = 'DADO VERMELHO'
 
-                print(pontuação)
+        print(cor_dado)
 
-                if contagem_cerebros < 13 and contagem_tiros < 3:
-                    start = str(input(f"{i}, digite 'S' para iniciar a rodada ou 'N' para passar a vez: \n"))
+        dados_sorteio = dado_sorteado
 
+    print(100 * '-', '\n')
+    time.sleep(1)  # Pausa de 1 segundo até o próximo comando
 
+    #sorteio das faces de cada dado sorteado anteriormente
+    print('As faces sorteadas foram:')
 
+    for i in range(0, 3, 1):
+        face_sorteada = random.choice(dados_sorteio)
+        if face_sorteada == "C":
+            face_dado = 'cérebro'
+            cerebros += 1
+        elif face_sorteada == "T":
+            face_dado = 'tiro'
+            tiros += 1
+        else:
+            face_dado = 'passo'
+            passos += 1
 
+        print(face_dado)
 
+    print(100 * '-', '\n')
+    time.sleep(1)  # Pausa de 1 segundo até o próximo comando
 
+    #mostrar placar atual com as incrementações
+    print(f'Pontuação de {jogadores[jogador_ativo]}')
+    print(f'cérebros: {cerebros}')
+    print(f'passos: {passos}')
+    print(f'tiros: {tiros}')
 
+    print(100 * '-', '\n')
+    time.sleep(1)  # Pausa de 1 segundo até o próximo comando
 
+    #questionar se laço continua para próxima rodada
+    continuar = str(input(f'{jogadores[jogador_ativo]},você quer continuar a jogar (s/n): ')).upper()
 
+    #zerar as variaveis zeram e mudar o jogador, voltando pra linha 64, caso o atual passe a vez
+    if continuar == "N":
+        jogador_ativo += 1
+        dados_sorteio = []
+        cerebros = 0
+        tiros = 0
+        passos = 0
 
-
-
-
-
-
-
-
-
-
-
-
-        elif start_lower != "s" or start_lower != "n":
-            print("Digite 'S' ou 'N' apenas!")
-
+        # Encerrar se a quantidade máxima de jogadores for atingida
+        if jogador_ativo == len(jogadores):
+            print('FIM DO JOGO')
+            break
+        #caso contrário, ir para o próximo jogador
+        else:
+            print('próxima rodada')
+            dado_sorteado = []
