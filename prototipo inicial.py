@@ -21,6 +21,7 @@ time.sleep(1) #Pausa de 1 segundo até o próximo comando
 #Contabilizar jogadores
 qtd_jogadores = 0
 
+#verificar se tem a quantidade mínima necessária de jogadores para iniciar a partida
 while qtd_jogadores <2:
     qtd_jogadores = int(input('Para iniciar, por favor, insira a quantidade de jogadores: '))
     if qtd_jogadores <2:
@@ -32,7 +33,6 @@ time.sleep(1) #Pausa de 1 segundo até o próximo comando
 #registrar nomes
 print('Tudo certo! Agora precisamos saber seus nomes')
 jogadores = []
-
 for i in range(qtd_jogadores):
     jogador = str(input(f'Digite o nome do jogador {i+1}: '))
     jogadores.append(jogador)
@@ -71,6 +71,7 @@ while True:
     #sorteio dos dados
     print('Os dados sorteados foram:')
 
+    #para cada dado no copo, sortear 3, de um em um
     for i in range(0, 3, 1):
         num_sorteado = random.randint(0,12)
         dado_sorteado = copo[num_sorteado]
@@ -92,6 +93,7 @@ while True:
     #sorteio das faces de cada dado sorteado anteriormente
     print('As faces sorteadas foram:')
 
+    #para cada dado dos 3 escolhidos na rotina anterior, sortear uma face
     for i in range(0, 3, 1):
         face_sorteada = random.choice(dados_sorteio)
         if face_sorteada == "C":
@@ -118,10 +120,10 @@ while True:
     print(100 * '-', '\n')
     time.sleep(1)  # Pausa de 1 segundo até o próximo comando
 
-    #questionar se laço continua para próxima rodada
+    #questionar se jogador continua para próxima rodada
     continuar = str(input(f'{jogadores[jogador_ativo]},você quer continuar a jogar (s/n): ')).upper()
 
-    #zerar as variaveis zeram e mudar o jogador, voltando pra linha 64, caso o atual passe a vez
+    #zerar as variaveis e mudar o jogador, voltando pra linha 64, caso o atual passe a vez
     if continuar == "N":
         jogador_ativo += 1
         dados_sorteio = []
@@ -131,9 +133,12 @@ while True:
 
         # Encerrar se a quantidade máxima de jogadores for atingida
         if jogador_ativo == len(jogadores):
+            print(100 * '-')
             print('FIM DO JOGO')
             break
         #caso contrário, ir para o próximo jogador
         else:
+            print(100 * '-')
             print('próxima rodada')
+            print(100 * '-', '\n')
             dado_sorteado = []
