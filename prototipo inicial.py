@@ -11,6 +11,7 @@ Checkpoint 1:
 #importar bibliotecas
 import time #inserir pausas entre ações
 import random #gerar números ou dados aleatórios
+from random import shuffle
 
 #Mensagem de saudação aos jogadores
 print (100*'-')
