@@ -1,129 +1,142 @@
-from random import shuffle
-from time import sleep
+'''
+Bruno Vinícius da Silva
+Tecnologia em Análise e Desenvolvimento de Sistemas
 
+Checkpoint 1:
+- Interação com o jogador, entradas e saídas de dados utilizando as estruturas de repetição.
+- Criação de uma opção para lançar os três dados aleatoriamente, verificar qual foi o resultado de cada um dos dados.
+- Criação das variáveis para contabilizar os tiros, cérebros e passos.
+'''
 
-# criar jogador
-class Player(object):
-    def __init__(self, name, score):
-        self.name = name
-        self.score = score
+#importar bibliotecas
+import time #inserir pausas entre ações
+from random import shuffle #gerar números ou dados aleatórios
 
-    def rodada(self):
-        sleep(0.5)
-        print("\n" f'Vez do jogador {self.name}:')
-        self.temp_score = {'cerebros': 0, 'tiros': 0}
-        self.dados_na_mao = []
-        self.dados = criar_dados()
+## DEFINIÇÃO DE FUNÇÕES E CLASSES
+
+# Classe que cria os dados como um objeto
+class Dado(object):
+    def __init__(self, cor, lados):
+        self.cor = cor
+        self.lados = lados
+
+#Função que define as cores e as faces dos dados
+def gerar_dados():
+    dado_vermelho = Dado('Vermelho', ['tiro', 'tiro', 'tiro', 'cerebro', 'passo', 'passo'])
+    dado_amarelo = Dado('Amarelo', ['tiro', 'tiro', 'cerebro', 'cerebro', 'passo', 'passo'])
+    dado_verde = Dado('Verde', ['tiro', 'cerebro', 'cerebro', 'cerebro', 'passo', 'passo'])
+    dados = [dado_vermelho, dado_vermelho, dado_vermelho, dado_amarelo, dado_amarelo, dado_amarelo, dado_amarelo, dado_verde, dado_verde, dado_verde, dado_verde, dado_verde, dado_verde]
+    shuffle(dados)
+    return dados
+
+# Função para criar os jogadores
+def criar_jogadores():
+    jogadores = []
+    # Verificar se tem a quantidade mínima de jogadores
+    while True:
+        try:
+            total_de_jogadores = int(input('Informe quantos jogadores irão participar da rodada: '))
+            if total_de_jogadores > 1:
+                print(f'Agora com {total_de_jogadores}, podemos iniciar a comilança de cérebros no Zombie Dice\n')
+                break
+            else:
+                print('É preciso mais do que 1 jogador para iniciar o Zombie Dice. Tente novamente!')
+        except ValueError:
+            print('Hey, você precisa informar um número inteiro que seja igual ou maior que 2, são as regras...')
+
+    # Registrar jogadores
+    for i in range(0, total_de_jogadores):
+        nome = input(f'Digite o nome do jogador {i + 1}: ')
+        jogador_atual = Jogador(nome, 0)
+        jogadores.append(jogador_atual)
+
+    shuffle(jogadores)
+
+    print('Atenção! Embaralhamos os zumbis, a ordem para jogar é:')
+    for i in jogadores:
+        time.sleep(0.3)
+        print(f'Zumbi >>>  {i.nome};')
+    return jogadores
+
+# Classe para definir o jogador como um objeto
+class Jogador(object):
+    #Função para armazenar nome e pontuação do jogador
+    def __init__(self, nome, pontos):
+        self.nome = nome
+        self.pontos = pontos
+
+    #Função para rotina de jogar dados
+    def round(self):
+        time.sleep(0.5)
+        print("\n" f'Vez do jogador {self.nome}:')
+        self.pontuacao_na_rodada = {'Cérebros Devorados': 0, 'Tiros': 0}
+        self.mao = []
+        self.dados = gerar_dados()
 
         while True:
 
             # verificação de dados na mão
-            while len(self.dados_na_mao) < 3:
-                self.dados_na_mao.append(self.dados.pop())
+            while len(self.mao) < 3:
+                self.mao.append(self.dados.pop())
 
             # embaralha as faces dos dados, mostra ao usuário e verifica as faces
             for i in range(2, -1, -1):
-                shuffle(self.dados_na_mao[i].sides)
-                self.face_para_cima = self.dados_na_mao[i].sides[-1]
-                print(f'Dado {self.dados_na_mao[i].color}, face: {self.face_para_cima}')
+                shuffle(self.mao[i].lados)
+                self.lado_cima = self.mao[i].lados[-1]
+                print(f'O dado {self.mao[i].cor} caiu com a face "{self.lado_cima}" voltada para cima.')
 
-                if self.face_para_cima == 'tiro':
-                    self.temp_score['tiros'] += 1
-                    self.dados.append(self.dados_na_mao.pop(i))
-                elif self.face_para_cima == "cerebro":
-                    self.temp_score['cerebros'] += 1
-                    self.dados.append(self.dados_na_mao.pop(i))
+                if self.lado_cima == 'tiro':
+                    self.pontuacao_na_rodada['Tiros'] += 1
+                    self.dados.append(self.mao.pop(i))
+                elif self.lado_cima == "cerebro":
+                    self.pontuacao_na_rodada['Cérebros Devorados'] += 1
+                    self.dados.append(self.mao.pop(i))
 
-            print(self.temp_score)
+            print(self.pontuacao_na_rodada)
 
             # verificação de tiros e se o jogador pretende continuar a rodada
-            if self.temp_score['tiros'] < 3:
+            if self.pontuacao_na_rodada['Tiros'] < 3:
                 print("\n")
-                continuar = input('Quer continuar jogando (s/n): ')
-                sleep(0.5)
+                continuar = input('E ai? Quer ir mais uma rodada? ("s" para SIM e "n" para NÃO): \n').upper()
+                time.sleep(0.5)
 
-                if continuar != 's':
-                    self.score += self.temp_score['cerebros']
-                    sleep(0.5)
-                    print(f'Fim da rodada do jogador {self.name}. Cérebros: {self.score}' "\n")
+                if continuar != 'S':
+                    self.pontos += self.pontuacao_na_rodada['Cérebros Devorados']
+                    time.sleep(0.5)
+                    print(f'Fim da rodada do jogador {self.nome}. Cérebros: {self.pontos}' "\n")
                     break
 
             else:
-                sleep(0.5)
-                print(f"Perdeu a rodada, tomou três tiros e jogou fora {self.temp_score['cerebros']} cérebros." "\n")
+                time.sleep(0.5)
+                print(f"Perdeu a rodada, tomou três tiros e jogou fora {self.pontuacao_na_rodada['Cérebros Devorados']} cérebros." "\n")
                 break
 
 
-# criar dados
-class Dado(object):
-    def __init__(self, color, sides):
-        self.color = color
-        self.sides = sides
-
-
-def criar_dados():
-    red = Dado('Vermelho', ['tiro', 'tiro', 'tiro', 'cerebro', 'passo', 'passo'])
-    yellow = Dado('Amarelo', ['tiro', 'tiro', 'cerebro', 'cerebro', 'passo', 'passo'])
-    green = Dado('Verde', ['tiro', 'cerebro', 'cerebro', 'cerebro', 'passo', 'passo'])
-    dados = [red, red, red, yellow, yellow, yellow, yellow, green, green, green, green, green, green]
-    shuffle(dados)
-    return dados
-
-
-# cria jogadores usando a classe definida
-def criar_jogadores():
-    players = []
-
-    while True:
-        try:
-            total_players = int(input('Informe o número de jogadores: '))
-            if total_players > 1:
-                break
-            else:
-                print('quantidade insuficiente de jogadores')
-        except ValueError:
-            print('Informar um número inteiro')
-
-    for i in range(0, total_players):
-        name = input(f'nome do jogador {i + 1}: ')
-        this_player = Player(name, 0)
-        players.append(this_player)
-
-    shuffle(players)
-
-    print('Ordem aleatória para jogar:')
-    for each_player in players:
-        print(f'Jogador:  {each_player.name};')
-
-    print("\n")
-
-    return players
-
-
+## INÍCIO DO JOGO
 if __name__ == '__main__':
-    # cria jogadores usando a função e armazena a vvariavel players
-    players = criar_jogadores()
-    game_over = False
+    jogadores = criar_jogadores() #Chama a função que cria jogadores para dar início ao jogo
+    fim_do_jogo = False
 
-    # verifica se alguem fez 13 pontos, caso contrario, continua o jogo
-    while game_over == False:
-        for each_player in players:
-            Player.rodada(each_player)
-            if each_player.score >= 13:
-                vencedor = each_player.name
-                game_over = True
+    # Verificação em cada rodada para ver qual jogador completou 13 cérebros
+    while fim_do_jogo == False:
+        for each_player in jogadores:
+            Jogador.round(each_player)
+            if each_player.pontos >= 13:
+                vencedor = each_player.nome
+                fim_do_jogo = True
 
-        sleep(0.5)
-        print(f"Fim da rodada. Pontuação: ")
+        #imprime o resultado final da rodada
+        time.sleep(0.5)
+        print(f"Chegamos ao fim desta rodada. A pontuação atual é de: ")
+        for i in jogadores:
+            print(f">>> Jogador {i.nome}: {i.pontos} cérebros comidos <<<")
 
-        for each_player in players:
-            print(f"Jogador {each_player.name}: {each_player.score} pontos.")
+# imprime o resultado final do jogo
+time.sleep(0.5)
+print("\n" "O jogo acabou por aqui. Veja a pontuação final: ")
+for i in jogadores:
+    print(f">>> Jogador {i.nome}: {i.pontos} cérebros comidos <<<")
 
-# mostra o resultado final do jogo
-sleep(0.5)
-print("\n" "Fim de jogo. Pontuação final: ")
-for each_player in players:
-    print(f"Jogador {each_player.name}: {each_player.score} pontos.")
-
-sleep(0.5)
-print("\n" f"O vencedor foi {vencedor}")
+# Imprimir quem foi o campeão
+time.sleep(0.5)
+print("\n" f"O grande zumbi vencedor de Zombie Dice foi {vencedor}. Parabéns!")
