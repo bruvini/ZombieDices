@@ -2,10 +2,11 @@
 Bruno Vinícius da Silva
 Tecnologia em Análise e Desenvolvimento de Sistemas
 
-Checkpoint 1:
-- Interação com o jogador, entradas e saídas de dados utilizando as estruturas de repetição.
-- Criação de uma opção para lançar os três dados aleatoriamente, verificar qual foi o resultado de cada um dos dados.
-- Criação das variáveis para contabilizar os tiros, cérebros e passos.
+Checkpoint 2:
+- Manipulação da estrutura lista
+- Manipulação da estrutura tuplas
+- Uso de funções para modularizar o código
+- Uso de funções visando o reuso e boas práticas
 '''
 
 #importar bibliotecas
@@ -52,6 +53,7 @@ def criar_jogadores():
 
     shuffle(jogadores)
 
+    #Imprimir o nome dos jogadores após embaralhados
     print('Atenção! Embaralhamos os zumbis, a ordem para jogar é:')
     for i in jogadores:
         time.sleep(0.3)
